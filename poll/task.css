@@ -1,0 +1,19 @@
+body {
+  font-family: Arial;
+}
+
+.card {
+  width: 625px;
+}
+
+.poll__title {
+  margin-bottom: 20px;
+}
+
+.poll__answers {
+  display: none;
+}
+
+.poll__answers_active {
+  display: block;
+}
