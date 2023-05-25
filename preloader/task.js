@@ -3,13 +3,23 @@ const items = document.getElementById('items');
 const loader = document.getElementById('loader');
 
 xhr.addEventListener('readystatechange', () => {
-    if (xhr.readyState ==xhr.DONE) {
-        loader.classList.remove('loader_active');
+    if (xhr.readyState === xhr.DONE) {
+        const status = xhr.status;
+        if (status === 0 || (status >= 200 && status < 400)) {
+            console.log(`The request has been completed successfully. Status code: ${xhr.status}, status response: ${xhr.responseText}`);
+            loader.classList.remove('loader_active');
+        } else {
+            console.log(`There has been an error with the request. Status code: ${xhr.status}, status response: ${xhr.responseText}`);
+        };
     };
 });
 
 xhr.onload = () => {
     let data = JSON.parse(xhr.response);
+    loadExchangeData(data); 
+};
+
+function loadExchangeData(data) {
     data = data.response.Valute;
     Object.entries(data).forEach(([key, value]) => {
         let item = document.createElement('div');

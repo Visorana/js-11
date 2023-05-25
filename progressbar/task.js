@@ -5,15 +5,34 @@ const progressBar = document.querySelector("progress");
 
 inputFile.addEventListener('change', () => {
     inputWrapperDesc.innerText = inputFile.files[0].name;
-    console.log(inputFile.files[0].size)
-    const formData = new FormData(document.forms.register);
-    send.addEventListener('click', (e) => {
-        e.preventDefault();
-        xhr.open('POST', 'https://students.netoservices.ru/nestjs-backend/upload');
-        xhr.send(formData);
-    })
-})
-
-xhr.upload.addEventListener("progress", (event) => {
-    progressBar.value = event.loaded;
 });
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    loadFile(inputFile.files[0]);
+});
+
+xhr.upload.addEventListener("progress", (e) => {
+    progressBar.value = e.loaded / e.total;
+});
+
+xhr.addEventListener('readystatechange', () => {
+    if (xhr.readyState === xhr.DONE) {
+        const status = xhr.status;
+        if (status === 0 || (status >= 200 && status < 400)) {
+            console.log(`The request has been completed successfully. Status code: ${xhr.status}, status response: ${xhr.responseText}`);
+        } else {
+            console.log(`There has been an error with the request. Status code: ${xhr.status}, status response: ${xhr.responseText}`);
+        };
+    };
+});
+
+function loadFile(data) {
+    const formData = new FormData();
+    for (const key in data) {
+        console.log(key, data[key])
+        formData.append(key, data[key]);
+    }
+    xhr.open('POST', 'https://students.netoservices.ru/nestjs-backend/upload');
+    xhr.send(formData); 
+}
