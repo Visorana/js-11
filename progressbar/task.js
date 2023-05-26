@@ -29,10 +29,7 @@ xhr.addEventListener('readystatechange', () => {
 
 function loadFile(data) {
     const formData = new FormData();
-    for (const key in data) {
-        console.log(key, data[key])
-        formData.append(key, data[key]);
-    }
+    formData.append('file', data);
     xhr.open('POST', 'https://students.netoservices.ru/nestjs-backend/upload');
     xhr.send(formData); 
 }
